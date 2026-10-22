@@ -1,0 +1,37 @@
+name: Protocol tests
+
+# Builds the RTMP server library (src/rtmp) and its tests with plain compilers,
+# no OBS needed, under AddressSanitizer + UndefinedBehaviorSanitizer and then
+# ThreadSanitizer. This is also the check that the library builds on Linux.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and run (ASan + UBSan)
+        run: |
+          mkdir -p out
+          for t in amf0 chunk flv session hub fuzz; do
+            c++ -std=c++17 -g -O1 -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer \
+              -Isrc -Itests src/rtmp/*.cpp tests/test_$t.cpp -pthread -o out/${t}_asan
+            ./out/${t}_asan
+          done
+
+      - name: Build and run (ThreadSanitizer)
+        run: |
+          for t in session hub fuzz; do
+            c++ -std=c++17 -g -O1 -fsanitize=thread -fno-omit-frame-pointer \
+              -Isrc -Itests src/rtmp/*.cpp tests/test_$t.cpp -pthread -o out/${t}_tsan
+            ./out/${t}_tsan
+          done

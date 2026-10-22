@@ -1,0 +1,34 @@
+name: Build (macOS)
+
+# Builds the plugin from a clean checkout against the OBS version pinned in
+# buildspec.json and runs the end-to-end tests. The headless-OBS harness test
+# is skipped automatically because the runner has no OBS.app.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure (downloads OBS sources and dependencies)
+        run: cmake --preset macos
+
+      - name: Build
+        run: cmake --build build_macos --config Release
+
+      - name: Test
+        run: ctest --test-dir build_macos -C Release --output-on-failure
+
+      - name: Package
+        run: |
+          cd build_macos/Release
+          ditto -c -k --keepParent obs-rtmp-server.plugin "$GITHUB_WORKSPACE/obs-rtmp-server-macos-universal.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: obs-rtmp-server-macos-universal
+          path: obs-rtmp-server-macos-universal.zip
