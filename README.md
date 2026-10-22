@@ -41,6 +41,15 @@ the stream arrives as a normal source with video, audio and its own entry in the
 - **Tested beyond "it compiles".** Protocol unit tests, a fuzzer, sanitizer runs, and an end-to-end test that loads
   the built plugin into a real libobs and streams a known pattern into it (see [Development](#development)).
 
+## What it looks like
+
+![RTMP Server Source in OBS Studio 32 receiving a DJI Osmo Pocket 3 over Wi-Fi](docs/screenshot-obs.jpg)
+
+<img src="docs/screenshot-properties.png" alt="The source's properties: status line, listen address, port, application, stream key, server URL and latency" width="440">
+
+OBS Studio 32.2.2 on macOS receiving a DJI Osmo Pocket 3 over Wi-Fi. The *RTMP Server* source and its properties dialog
+are this third-party plugin; the rest of the window is OBS Studio, which this project is not part of.
+
 ## Quick start
 
 1. [Install the plugin](#installation) and restart OBS.
