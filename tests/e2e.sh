@@ -1,6 +1,6 @@
 #!/bin/sh
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2026 obs-rtmp-server contributors
+# Copyright (C) 2026 rtmp-server-source contributors
 # End to end: a real RTMP client (FFmpeg, via test-publisher) streams a known
 # test pattern into rtmp-probe, which decodes it with the plugin's decoders and
 # checks size, picture content and audio level.

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-// Copyright (C) 2026 obs-rtmp-server contributors
+// Copyright (C) 2026 rtmp-server-source contributors
 // A tiny RTMP publisher for testing, built on the FFmpeg libraries OBS ships,
 // so no ffmpeg binary needs to be installed. It sends a synthetic picture
 // with a known layout (bright top half, dark bottom half, a moving bar) and a

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2026 obs-rtmp-server contributors
+# Copyright (C) 2026 rtmp-server-source contributors
 
 cmake_minimum_required(VERSION 3.28...3.30)
 

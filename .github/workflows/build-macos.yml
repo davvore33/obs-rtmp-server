@@ -26,9 +26,9 @@ jobs:
       - name: Package
         run: |
           cd build_macos/Release
-          ditto -c -k --keepParent obs-rtmp-server.plugin "$GITHUB_WORKSPACE/obs-rtmp-server-macos-universal.zip"
+          ditto -c -k --keepParent rtmp-server-source.plugin "$GITHUB_WORKSPACE/rtmp-server-source-macos-universal.zip"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: obs-rtmp-server-macos-universal
-          path: obs-rtmp-server-macos-universal.zip
+          name: rtmp-server-source-macos-universal
+          path: rtmp-server-source-macos-universal.zip

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-// Copyright (C) 2026 obs-rtmp-server contributors
+// Copyright (C) 2026 rtmp-server-source contributors
 // Listens like the OBS source does and reports what a publisher sends, so the
 // server can be tried with a real encoder without running OBS.
 //

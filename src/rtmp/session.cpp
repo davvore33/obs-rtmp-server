@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-// Copyright (C) 2026 obs-rtmp-server contributors
+// Copyright (C) 2026 rtmp-server-source contributors
 #include "rtmp/session.h"
 
 #include "rtmp/bytes.h"

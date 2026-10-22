@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-// Copyright (C) 2026 obs-rtmp-server contributors
+// Copyright (C) 2026 rtmp-server-source contributors
 // Feeds corrupted RTMP conversations to a Session. The pass criterion is
 // "does not crash, hang or trip a sanitizer"; run it under ASan/UBSan.
 #include "test_util.h"

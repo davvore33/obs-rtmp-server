@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-// Copyright (C) 2026 obs-rtmp-server contributors
+// Copyright (C) 2026 rtmp-server-source contributors
 // Loads the built plugin into a real libobs (the one from an installed OBS),
 // creates an "RTMP Server" source and checks what OBS itself ends up with:
 // the async video frame the source exposes and the audio it delivers.
@@ -7,7 +7,7 @@
 // It does not start the OBS app or touch its configuration. Run it against a
 // publisher such as test-publisher (see tests/e2e.sh).
 //
-//   obs-harness --plugin <path>/obs-rtmp-server.plugin --port 19360 --key harness \
+//   obs-harness --plugin <path>/rtmp-server-source.plugin --port 19360 --key harness \
 //               --expect-size 640x360 --expect-luma 200,50 --min-audio-seconds 2 [--passes 2]
 //
 // With --passes N the check must succeed N times in a row, each time with a
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 	}
 
 	obs_module_t *module = nullptr;
-	const std::string binary = plugin + "/Contents/MacOS/obs-rtmp-server";
+	const std::string binary = plugin + "/Contents/MacOS/rtmp-server-source";
 	const std::string data = plugin + "/Contents/Resources";
 	int open_result = obs_open_module(&module, binary.c_str(), data.c_str());
 	if (open_result != MODULE_SUCCESS || !obs_init_module(module)) {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 /*
-OBS RTMP Server
-Copyright (C) 2026 obs-rtmp-server contributors
+RTMP Server Source
+Copyright (C) 2026 rtmp-server-source contributors
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ MODULE_EXPORT const char *obs_module_description(void)
 
 MODULE_EXPORT const char *obs_module_name(void)
 {
-	return "OBS RTMP Server";
+	return "RTMP Server Source";
 }
 
 bool obs_module_load(void)

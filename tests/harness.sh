@@ -1,13 +1,13 @@
 #!/bin/sh
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2026 obs-rtmp-server contributors
+# Copyright (C) 2026 rtmp-server-source contributors
 # Loads the built plugin into the libobs of an installed OBS (headless, the OBS
 # app itself is not touched), streams a test pattern at the "RTMP Server"
 # source with a real RTMP client, and checks what OBS received. Then the
 # publisher is killed mid-stream and a new one connects: the source must pick
 # the stream up again.
 #
-#   harness.sh <obs-harness> <test-publisher> <path/to/obs-rtmp-server.plugin>
+#   harness.sh <obs-harness> <test-publisher> <path/to/rtmp-server-source.plugin>
 
 HARNESS="$1"
 PUBLISHER="$2"

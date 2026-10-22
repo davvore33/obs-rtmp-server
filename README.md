@@ -1,11 +1,11 @@
-# OBS RTMP Server
+# RTMP Server Source
 
 **An RTMP server inside OBS Studio.** Add an *RTMP Server* source, point a camera, a phone or another computer at
 it, and the live video and audio show up in your scene. No nginx, no media server, nothing to install besides the
 plugin.
 
-[![Protocol tests](https://github.com/davvore33/obs-rtmp-server/actions/workflows/protocol-tests.yml/badge.svg)](https://github.com/davvore33/obs-rtmp-server/actions/workflows/protocol-tests.yml)
-[![Build (macOS)](https://github.com/davvore33/obs-rtmp-server/actions/workflows/build-macos.yml/badge.svg)](https://github.com/davvore33/obs-rtmp-server/actions/workflows/build-macos.yml)
+[![Protocol tests](https://github.com/davvore33/rtmp-server-source/actions/workflows/protocol-tests.yml/badge.svg)](https://github.com/davvore33/rtmp-server-source/actions/workflows/protocol-tests.yml)
+[![Build (macOS)](https://github.com/davvore33/rtmp-server-source/actions/workflows/build-macos.yml/badge.svg)](https://github.com/davvore33/rtmp-server-source/actions/workflows/build-macos.yml)
 ![License: GPL-2.0-or-later](https://img.shields.io/badge/plugin-GPL--2.0--or--later-blue)
 ![License: LGPL-2.1-or-later](https://img.shields.io/badge/rtmp%20library-LGPL--2.1--or--later-blue)
 ![OBS 32](https://img.shields.io/badge/OBS%20Studio-32.x-302E31)
@@ -15,6 +15,10 @@ plugin.
   phone streaming app ┼── rtmp://192.168.1.20/live/<key> ──▶  OBS Studio
   ffmpeg, another OBS ┘                                       └─ RTMP Server source ──▶ your scene
 ```
+
+> **Made with AI.** This plugin was written by Claude, an AI model from Anthropic, under the maintainer's direction.
+> Please read [How this was made](#how-this-was-made) before relying on it. It is an independent project, not part
+> of, endorsed by, or affiliated with the OBS Project.
 
 ## Why
 
@@ -73,17 +77,17 @@ hard to guess, and use this computer's address instead of `127.0.0.1`.
 
 ### macOS, from a release
 
-1. Download `obs-rtmp-server-<version>-macos-universal.zip` from the
-   [Releases](https://github.com/davvore33/obs-rtmp-server/releases) page and unzip it.
-2. Move `obs-rtmp-server.plugin` into
+1. Download `rtmp-server-source-<version>-macos-universal.zip` from the
+   [Releases](https://github.com/davvore33/rtmp-server-source/releases) page and unzip it.
+2. Move `rtmp-server-source.plugin` into
    `~/Library/Application Support/obs-studio/plugins/` (in Finder: **Go → Go to Folder…**, paste the path).
 3. The build is signed ad hoc, not notarized, so macOS marks a downloaded copy as quarantined. Clear the mark once:
 
    ```bash
-   xattr -dr com.apple.quarantine ~/Library/"Application Support"/obs-studio/plugins/obs-rtmp-server.plugin
+   xattr -dr com.apple.quarantine ~/Library/"Application Support"/obs-studio/plugins/rtmp-server-source.plugin
    ```
 4. Restart OBS. In the log (**Help → Log Files → View Current Log**) you should see
-   `[obs-rtmp-server] plugin loaded`.
+   `[rtmp-server-source] plugin loaded`.
 
 To remove it, delete the `.plugin` folder.
 
@@ -92,11 +96,11 @@ To remove it, delete the `.plugin` folder.
 Needs Xcode and CMake 3.28 or newer.
 
 ```bash
-git clone https://github.com/davvore33/obs-rtmp-server.git
-cd obs-rtmp-server
+git clone https://github.com/davvore33/rtmp-server-source.git
+cd rtmp-server-source
 cmake --preset macos                         # first run downloads OBS sources and dependencies to .deps/ (~1 GB)
 cmake --build build_macos --config Release
-cp -R build_macos/Release/obs-rtmp-server.plugin ~/Library/"Application Support"/obs-studio/plugins/
+cp -R build_macos/Release/rtmp-server-source.plugin ~/Library/"Application Support"/obs-studio/plugins/
 ```
 
 ## Connecting a sender
@@ -147,7 +151,7 @@ or an error such as *Cannot start the server: … Address already in use*. Press
 ## Troubleshooting
 
 When something does not connect, the OBS log is the fastest guide. Look for lines starting with
-`[obs-rtmp-server]` (**Help → Log Files → View Current Log**).
+`[rtmp-server-source]` (**Help → Log Files → View Current Log**).
 
 | You see | Meaning | Fix |
 | --- | --- | --- |
@@ -161,7 +165,7 @@ When something does not connect, the OBS log is the fastest guide. Look for line
 | Picture but no sound (or the reverse) | The sender sent only one track, or its codec is unsupported | Check the `receiving video/audio:` lines in the log |
 | Audio and video out of sync | *Latency: Low* is on | Switch back to *Normal* |
 
-When you report a problem, please include the sender model or app, the `[obs-rtmp-server]` lines from the log, and
+When you report a problem, please include the sender model or app, the `[rtmp-server-source]` lines from the log, and
 your OBS version.
 
 ## Security
@@ -248,6 +252,29 @@ otool -L /Applications/OBS.app/Contents/Frameworks/libavcodec.dylib | sed -n 2p
 - A Tools-menu or dock panel
 - RTMPS, and the digest handshake for older encoders
 
+## How this was made
+
+**This plugin was written by an AI.** Claude (Anthropic's model, used through Claude Code) wrote the source code, the
+build changes, the tests and test tools, the CI workflows and this documentation, in one long working session with
+the maintainer. The commit history carries `Co-Authored-By` trailers to say so.
+
+What the human maintainer did: set the goal and the requirements, ran the plugin in OBS Studio 32.2.2 on a Mac with a
+DJI Osmo Pocket 3, and reported what happened, which is how the "put the stream key at the end of the URL" advice and
+the reconnect handling came about. The code was not written by hand.
+
+How it was checked:
+
+- automated tests: protocol unit tests, a mutation fuzzer, sanitizer runs, an end-to-end test with a real RTMP
+  client (FFmpeg), and a harness that loads the built plugin into the real libobs of an installed OBS and checks
+  what OBS receives (see [Tests](#tests));
+- CI on GitHub: protocol tests on Linux and macOS, and a clean-clone build on macOS;
+- manual testing with the DJI Osmo Pocket 3 and FFmpeg.
+
+What it has **not** had: an independent human code review or a security audit, and senders other than FFmpeg and
+the DJI Osmo Pocket 3 are untested. This is new, network-facing software. Treat it accordingly: read the code if it
+matters to you, keep the default of listening on this computer only unless you need more, and use a strong stream
+key. Bug reports are welcome.
+
 ## Contributing
 
 Bug reports and pull requests are welcome, particularly reports of which cameras and apps work. Please run the test
@@ -270,4 +297,5 @@ source file carries an SPDX license identifier.
 ## Acknowledgements
 
 Built on [OBS Studio](https://obsproject.com/) and its [plugin template](https://github.com/obsproject/obs-plugintemplate),
-and decoding with [FFmpeg](https://ffmpeg.org/).
+and decoding with [FFmpeg](https://ffmpeg.org/). "OBS" and "OBS Studio" are used here only to name the software this
+plugin works with; the plugin is independent of the OBS Project.
